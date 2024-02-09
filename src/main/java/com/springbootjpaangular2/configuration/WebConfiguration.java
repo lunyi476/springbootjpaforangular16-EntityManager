@@ -12,11 +12,19 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 /** 
  * @author lyi
  * 08/2020
+ * 
+ * Configuration Documents:  Bean or WebMvcConfiguration/WebMvcConfigurationSupport
+ * Bean:      https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-servlet/special-bean-types.html
+ * WebConfig: https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-config.html
+ * 
+ * spring-framework/spring-webmvc/src/main/resources/org/springframework/web/servlet/DispatcherServlet.properties
+ * 
  * 
  * Auto-configuration could be overridden by manual configuration.
  * If no manual configuration and auto-configuration class 
@@ -26,47 +34,9 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  * to @ConfiguratonProperties
  */
 @Configuration(proxyBeanMethods = false)
-public class WebConfiguration {
+//@EnableWebMvc
+public class WebConfiguration { // extends WebMvcConfigurationSupport  or Implements WebMvcConfigurer
 	
-	// The Console lets you access a SQL database using a browser interface
-    @Bean 
-    ServletRegistrationBean<?> h2servletRegistration(){
-        ServletRegistrationBean<WebServlet> registrationBean = 
-        		new ServletRegistrationBean<>(new WebServlet());
-        
-        registrationBean.addUrlMappings("/console/*");
-        return registrationBean;
-    }
-    
-    /** 
-     *  (1)
-     *  defined a Bean same as :
-     * 
-     *  <beans>
-	 *	   <bean id = "terminatBean" class = "com.springbootjpaangular2.configuration.TerminatBean" />
-	 *  </beans>
-	 * 
-	 *  If with no explicit name in @Bean specified, @Autowired, @Resource finds a primary 
-	 *  type match instead of a specific named bean.
-	 *  
-	 *  (2) Use BeanFactory, A is Bean:
-	 *  
-	 *  public class A  implements BeanFactoryAware{
-	 *	@Override
-	 *	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-	 *	    .....
-	 *	}
-	 *  
-	 *  (3)
-	 *  @Value inject:
-	 *  
-	 *  public MovieRecommender(@Value("${catalog.name}") String catalog) {
-     *   	this.catalog = catalog;
-     *	}
-     *
-     * ${catalog.name} from @PropertySource("classpath:application.properties")
-     * 
-     */
     @Bean
     public TerminatBean getTerminateBean() {
         return new TerminatBean();

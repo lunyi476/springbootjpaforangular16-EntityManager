@@ -13,6 +13,11 @@ import com.springbootjpaangular2.controllers.QuoteOfferController;
 
 /** 
  * Any exception will come to this central advice
+ * 
+ *@ExceptionHandler, @InitBinder, and @ModelAttribute methods apply only to the @Controller class, or class hierarchy,
+ *in which they are declared. If, instead, they are declared in an @ControllerAdvice or @RestControllerAdvice class, 
+ *then they apply to any controller. Moreover, as of 5.3, @ExceptionHandler methods in @ControllerAdvice can be used 
+ *to handle exceptions from any @Controller or any other handler.
  *
  */
 @ControllerAdvice
