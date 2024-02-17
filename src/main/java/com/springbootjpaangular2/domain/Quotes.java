@@ -1,7 +1,7 @@
 package com.springbootjpaangular2.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;

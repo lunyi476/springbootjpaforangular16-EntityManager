@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+// replaced javax with jakarta
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 
 
 /** 
@@ -18,9 +19,8 @@ import javax.persistence.PersistenceContext;
  * 08/2020
  */
 @Service
-@Transactional
 public class OrdersServiceImpl implements OrdersService {
-    // Application managed
+    // Application managed, it is thread safe and different from ENtityManager
 	private final EntityManagerFactory entityManagerFactory;	
 	
 	@Autowired // singleton

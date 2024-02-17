@@ -8,16 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
+
 import org.hibernate.Session;
 
 import io.reactivex.Observable;
@@ -34,10 +36,11 @@ public class QuoteOfferServiceImpl implements QuoteOfferService {
 			QuoteOfferServiceImpl.class);
 	  
 	   /** two ways to get EntityManager, EntityManager is actually DAO (not a necessary layer), 
-	    *  Quotes object is actually DTO **/
-	  // (1)
-	  // Application managed, thread safe, can create thread safe EntityManager too
-	  /**
+	    *  Quotes object is actually DTO 
+	    **/
+	  /** (1)
+	   Application managed, thread safe, can create thread safe EntityManager too (but injected EntityManager is not thread safe)
+	  
 	   private final EntityManagerFactory entityManagerFactory;	
 	  	
 	  @Autowired // singleton QuoteOfferServiceImpl (EntityManagerFactory factory)
@@ -45,11 +48,38 @@ public class QuoteOfferServiceImpl implements QuoteOfferService {
 	 
 	  @Override public EntityManagerFactory getEntityManagerFactory () { return
 	  this.entityManagerFactory; }
-	  **/
+	  
+	  With an application-managed entity manager, on the other hand, the persistence context 
+	  is not propagated to application components, and the lifecycle of EntityManager instances 
+	  is managed by the application.
+	  We have to use below to managing every transaction.
+	  entityManagerFactory.createEntityManager().begin() ..............  
+	  entityManagerFactory.createEntityManager().close().
 	
-	  // (2)
-	  //Container managed and Thread safe (Proxy wrapped EntityManager)
+	
+	  (2)
+	   Container managed and Thread safe (Proxy wrapped EntityManager)
+	   With a container-managed entity manager, an EntityManager instance’s persistence context 
+	   is automatically propagated by the container to all application components that use the 
+	   EntityManager instance within a single Java Transaction API (JTA OR JPA if not need cross database) transaction.
+	   JTA transactions usually involve calls across application components. To complete a JTA transaction, 
+	   these components usually need access to a single persistence context.
+	   This occurs when an EntityManager is injected into the application components by means of 
+	   the javax.persistence.PersistenceContext annotation. The persistence context is automatically propagated 
+	   with the current JTA transaction, and EntityManager references that are mapped 
+	   to the same persistence unit provide access to the persistence context within that transaction. 
+	   By automatically propagating the persistence context, application components don’t need
+	   to pass references to EntityManager instances to each other in order to make changes 
+	   within a single transaction. The Java EE container manages the lifecycle of container-managed entity managers.
+	   
+	   (3)  However, the container (JakartaEE or Spring) injects a special proxy instead of a simple EntityManager here. 
+	   Spring, for example, injects a proxy of type SharedEntityManagerCreator. 
+	   Every time we use the injected EntityManager, this proxy will either reuse the existing EntityManager or create a new one. 
+	   Reuse usually occurs when we enable something like Open Session/EntityManager in View. 
+       Either way, the container ensures that each EntityManager is confined to one thread.
+	   **/
 	  @PersistenceContext  
+	  @Autowired
 	  public EntityManager em;
 	  
 
@@ -137,11 +167,11 @@ public class QuoteOfferServiceImpl implements QuoteOfferService {
 	     * Another way is post changed fields only and reset it. 
 	     */
 	    @Override
-	    @Transactional 
+	    @Transactional // without this we must manually set to begin/commit transaction
 	    public Quotes updateWholeQuote(Quotes quote) throws Exception {
 	    	Integer reqNo = quote.getRequest_no();
 	    	String owner =  quote.getOwner();
-			
+
 	    	Quotes qts = em.find(Quotes.class, new QuotesKeys(reqNo, owner));   
 	        /**  
 	         *  Simply remove all offers of target, add/copy all field value from source.

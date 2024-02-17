@@ -6,9 +6,10 @@ import com.springbootjpaangular2.domain.QuotesKeys;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
-import org.springframework.transaction.annotation.Transactional;
+
+//import org.springframework.transaction.annotation.Transactional;
 
 import com.springbootjpaangular2.domain.Offers;
 import com.springbootjpaangular2.domain.OffersKeys;

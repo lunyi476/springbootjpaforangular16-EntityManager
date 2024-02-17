@@ -3,7 +3,7 @@ package com.springbootjpaangular2.services;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import com.springbootjpaangular2.domain.Offers;
 import com.springbootjpaangular2.domain.Orders;
