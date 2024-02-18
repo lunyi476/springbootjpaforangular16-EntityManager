@@ -6,21 +6,24 @@
 
 	<groupId>com.springbootjpaangular16e</groupId>
 	<artifactId>spring-boot-jpa-angular16e</artifactId>
+	<url>https://github.com/lunyi476/springbootjpaforangular16-EntityManager</url>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
 	<name>spring-boot-jpa-angular16e</name>
 	<description>Demo project for Spring Boot</description>
-
-	<parent>
+   <scm>
+    <url>https://github.com/lunyi476/springbootjpaforangular16-EntityManager</url>
+    </scm>
+    
+    	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-		
+
+	<properties>	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>

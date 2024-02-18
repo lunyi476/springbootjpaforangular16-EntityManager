@@ -46,13 +46,13 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.properties")  // default
 /**
  * (1) multiple properties: value = {"classpath:example1.properties",
  * "classpath:example2.properties"}
  * or @PropertySource("classpath:example1.properties") @PropertySource("classpath:example2.properties")
  * 
- * (2) change default property to looad: If we want to change which file Spring
+ * (2) change default property to load: If we want to change which file Spring
  * Boot reads by default then we can use the spring.config.name property. export
  * SPRING_CONFIG_NAME=foo Now when we run the spring boot application, it will
  * load all the properties from foo.properties file.
@@ -60,8 +60,7 @@ import javax.sql.DataSource;
  * (3) Bind Fields to Property Values with @ConfigurationProperties: prefix are
  * valid to bind to this object in property
  * 
- * @ConfigurationProperties(prefix="spring.datasource", ignoreUnknownFields =
- *                                                      false)
+ * @ConfigurationProperties(prefix="spring.datasource", ignoreUnknownFields =false)
  * 
  * (4) Include Additional Configuration Files we can have the following import statement in
  *  application.properties file. spring.config.import=classpath:datasource.properties,
@@ -100,7 +99,7 @@ public class DBConfigurationProperties {
 	**/
 	
 	  /** Issues: (1) with data.sql and schema.sql, run schema.sql syntax errors  
-	   * resolved (2) if only data.sql in classpath (main/resources), it runs before Entity DDL schema **/
+	   * resolved (2) if only data.sql in classpath (main/resources), it runs before Entity DDL schema generated**/
 	  @Bean 
 	  public LocalContainerEntityManagerFactoryBean entityManagerFactory() 
 	  {
@@ -123,7 +122,7 @@ public class DBConfigurationProperties {
 	public DataSource dataSource() {
 		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1");  // DB_CLOSE_DELAY=-1
+		dataSource.setUrl("jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1");  
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 
