@@ -134,7 +134,7 @@ public class DBConfigurationProperties {
 	 *  Or spring.sql.init.data-locations=classpath:META-INF/data.sql  in application.properties
 	 *  set jakarta.persistence.sql-load-script-source=true in application.properties, not in this method
 	 *  Then, data.sql will run after DDL (Entity) generated to void "Table not found"  error.
-	 *  Log file (console screen) does not show the insert/data.sql scripts, but ddl run after DDL generated.
+	 *  Log file (console screen) does not show the insert/data.sql scripts, but data.sql run after DDL generated.
 	 *  It seems data.sql is run at first query database
 	 **/
 	final Properties additionalProperties() {
